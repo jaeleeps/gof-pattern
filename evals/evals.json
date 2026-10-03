@@ -1,0 +1,72 @@
+{
+  "skill_name": "gof-patterns",
+  "evals": [
+    {
+      "id": 1,
+      "name": "full-scan-ts",
+      "cwd": "evals/files/shop-ts",
+      "prompt": "What design patterns does this codebase use? For each one, tell me whether it's actually appropriate here.",
+      "expected_output": "A report covering every planted pattern in shop-ts with a location, a confidence level, and a verdict that matches the ground truth.",
+      "files": ["evals/files/shop-ts"],
+      "expectations": [
+        "Identifies Strategy in src/pricing (PricingStrategy with Regular/Member/Bulk) and judges it appropriate",
+        "Identifies the Singleton in src/config/AppConfig.ts and flags it as over-engineered or misused, citing its mutable global state or the getInstance() calls inside OrderService",
+        "Identifies the payment gateways (StripeGateway/PayPalGateway) as Adapter over the vendor SDKs and judges them appropriate",
+        "Identifies Decorator in src/http (Retrying/Logging HttpClient wrapping FetchHttpClient) and judges it appropriate",
+        "Says the order status classes in src/orders are really State (not Strategy), or that State would fit better, because OrderService drives the transitions",
+        "Says ShippingProxy is functionally a Decorator (logging/timing), not a Proxy",
+        "Flags UserFactory as name-only or a trivial/simple factory that is not a GoF Factory Method or Abstract Factory",
+        "Identifies the Visitor in src/reports and flags it as over-engineered because there is only one visitor (TotalVisitor)",
+        "Identifies the Node EventEmitter usage in src/events as Observer (idiomatic) and does not mark it down for lacking class ceremony",
+        "Points out the repeated switch on channel in src/notifications/notify.ts as an opportunity for polymorphism/Strategy",
+        "References findings with file paths (ideally file:line)"
+      ]
+    },
+    {
+      "id": 2,
+      "name": "targeted-misapplied-state",
+      "cwd": "evals/files/shop-ts",
+      "prompt": "We modeled order statuses in src/orders using the strategy pattern. Is that the right pattern for this?",
+      "expected_output": "A direct answer that the code is really a state machine, so State fits better than Strategy, backed by evidence from the transition logic in OrderService.",
+      "files": ["evals/files/shop-ts"],
+      "expectations": [
+        "Answers the question directly: Strategy is not the best fit, or it is misapplied",
+        "Recommends the State pattern (or an explicit state machine)",
+        "Cites that transitions are driven from OrderService (setStatusStrategy calls) rather than by the status objects themselves",
+        "Mentions the string comparison on status.name (e.g. status.name === 'pending' / 'paid') as a sign the abstraction leaks",
+        "Gives a concrete recommendation, e.g. moving transition methods (pay/ship/cancel) into the status objects"
+      ]
+    },
+    {
+      "id": 3,
+      "name": "name-trap",
+      "cwd": "evals/files/shop-ts",
+      "prompt": "Do src/shipping/ShippingProxy.ts and src/users/UserFactory.ts correctly implement the Proxy and Factory patterns?",
+      "expected_output": "Both classes are named after patterns they don't implement: ShippingProxy adds logging/timing (Decorator), and UserFactory only wraps a constructor.",
+      "files": ["evals/files/shop-ts"],
+      "expectations": [
+        "Says ShippingProxy does not control access (no lazy loading, remote, protection, or caching) and so is not really a Proxy",
+        "Identifies ShippingProxy as a Decorator (it adds logging/timing behind the same interface)",
+        "Says UserFactory is not a GoF Factory Method or Abstract Factory: no polymorphism or subclass choice, just a wrapper around new User()",
+        "Recommends renaming ShippingProxy or replacing UserFactory with direct construction, or explains when keeping the factory would be justified"
+      ]
+    },
+    {
+      "id": 4,
+      "name": "python-idiomatic-and-overengineering",
+      "cwd": "evals/files/etl-py",
+      "prompt": "Which GoF patterns does this ETL package use? I'm worried we over-engineered it.",
+      "expected_output": "Recognizes the idiomatic Python patterns as legitimate and appropriate, confirms the Template Method, and flags only QueryBuilder as over-engineered.",
+      "files": ["evals/files/etl-py"],
+      "expectations": [
+        "Identifies BaseExporter with CsvExporter/JsonLinesExporter as Template Method and judges it appropriate",
+        "Identifies QueryBuilder as an over-engineered Builder (only two fields; Python keyword arguments or a dataclass would do)",
+        "Recognizes the @retry function decorator as an idiomatic Decorator",
+        "Recognizes read_records() as an idiomatic Iterator (generator over the paginated API)",
+        "Recognizes the key= function passed to dedupe() as an idiomatic Strategy",
+        "Treats the module-level frozen `settings` instance as acceptable (idiomatic Singleton or simply a module constant), not as a harmful mutable global",
+        "Does not call the whole package over-engineered; the verdicts discriminate between the pieces"
+      ]
+    }
+  ]
+}
