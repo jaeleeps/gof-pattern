@@ -7,15 +7,25 @@ A [Claude skill](https://docs.claude.com/en/docs/claude-code/skills) that finds 
 
 ## Install
 
+**As a Claude Code plugin (recommended):**
+
+```
+/plugin marketplace add jaeleeps/gof-pattern
+/plugin install gof-patterns@gof-patterns
+```
+
+**As a standalone skill:**
+
 ```bash
 git clone https://github.com/jaeleeps/gof-pattern.git ~/.claude/skills/gof-patterns
 ```
 
-Then ask Claude things like *"What design patterns does `src/payments` use?"* or *"Is this Singleton appropriate?"*
+Then ask Claude things like *"What design patterns does `src/payments` use?"* or *"Is this Singleton appropriate?"* The skill triggers on its own. As a plugin, you can also invoke it explicitly with `/gof-patterns:gof-patterns`.
 
 ## Layout
 
 - `SKILL.md`: the workflow and report format.
+- `.claude-plugin/`: the plugin manifest and the marketplace manifest. The repo root is both the plugin and its marketplace.
 - `references/patterns.md`: a catalog of all 23 patterns. Each entry covers intent, the participants to confirm, search signals, idiomatic forms, when the pattern fits, smells, and lookalike patterns.
 
 ## Evals
@@ -36,3 +46,7 @@ The pattern catalog is based on the GoF book, and was checked against these sour
 - Christiansson (ed.) et al., [*GoF Design Patterns – with examples using Java and UML2*](https://edeleastar.github.io/design-patterns/topic00/pdf/c-logica-gof-catalogue.pdf), Logica (2008), CC BY-SA 3.0
 
 See the Sources section of [references/patterns.md](references/patterns.md) for how these sources are used and where they disagree.
+
+## License
+
+[MIT](LICENSE)
