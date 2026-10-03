@@ -43,17 +43,22 @@ def run_one(ev, config, workspace):
 
     events = [json.loads(line) for line in proc.stdout.splitlines() if line.strip().startswith("{")]
     result = next((e for e in reversed(events) if e.get("type") == "result"), {})
-    triggered = any(
-        block.get("type") == "tool_use" and block.get("name") == "Skill"
-        and "gof-patterns" in json.dumps(block.get("input", {}))
+    # stream-json emits one event per content block, so parallel tool calls from a
+    # single model turn arrive as separate events sharing a message id.
+    tool_uses = [
+        (e["message"]["id"], block)
         for e in events if e.get("type") == "assistant"
-        for block in e.get("message", {}).get("content", [])
+        for block in e.get("message", {}).get("content", []) if block.get("type") == "tool_use"
+    ]
+    triggered = any(
+        b.get("name") == "Skill" and "gof-patterns" in json.dumps(b.get("input", {}))
+        for _, b in tool_uses
     )
     summary = {
         "eval_id": ev["id"], "eval_name": ev["name"], "config": config,
         "exit_code": proc.returncode, "skill_triggered": triggered,
         "duration_ms": result.get("duration_ms"), "cost_usd": result.get("total_cost_usd"),
-        "num_turns": result.get("num_turns"),
+        "model_turns": len({mid for mid, _ in tool_uses}), "tool_calls": len(tool_uses),
     }
     (run_dir / "output.md").write_text(result.get("result", "") or proc.stderr)
     (run_dir / "run.json").write_text(json.dumps(summary, indent=2))

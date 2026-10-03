@@ -40,5 +40,5 @@
    - consistent structure: confidence labels, a fixed verdict vocabulary, and a "considered and rejected" section;
    - finer distinctions, such as the Factory Method nested in a Template Method, and Bridge flagged as an idiomatic, parameter-passed form;
    - verdicts that don't hedge.
-3. **Efficiency regression on large scans.** In eval 5 the skill used 38 turns against the baseline's 5: it searched first and then read files one at a time, while the baseline read all the files in a few batches. That made it 1.5× slower and 1.4× more expensive. A next iteration should tell the skill to batch-read small scopes up front and save searching for large repos.
+3. **Efficiency regression on large scans.** ~~In eval 5 the skill used 38 turns against the baseline's 5: it searched first and then read files one at a time.~~ **Corrected in iteration 4:** `num_turns` counts tool calls, not model turns. That run made 36 tool calls across 10 model turns, and the files *were* read in parallel. The real cost came from failed attempts to dump the whole tree through the shell. See `iteration-4.md`.
 4. **The no-false-positive check passes in both configs.** Neither run invented patterns in `util`, and both explicitly ruled out Singleton for `Ids`.

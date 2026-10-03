@@ -18,7 +18,11 @@ Settle on the target: a file, a directory, a module, or the whole repo. If the u
 
 Note the language and paradigm. They decide which forms of a pattern count as idiomatic (see step 3).
 
-### 2. Gather candidates
+Choose how to read the code based on the size of the target, not of the whole repo:
+- **Small target (roughly 40 source files or 3,000 lines or fewer):** read every source file in full before analyzing anything. List the files once (Glob), then issue all the `Read` calls **in parallel, as one batch in a single turn**. Do not try to dump the tree through a shell command (`cat` loops, `xargs`, `grep -n ''`). Those often hit permission checks or exceed the inline output limit, and then you have to re-read everything anyway. Many patterns only show across several files (Bridge, Mediator, Template Method bypassed by a subclass, Strategy eroded by `instanceof` in the context), so reading everything is cheaper and more accurate than searching first. Then go straight to step 3.
+- **Larger target:** survey and search first (step 2), then read the candidate files in parallel batches.
+
+### 2. Gather candidates (large targets)
 Run a cheap pass first, and remember that a hit is only a lead:
 - Grep for the name signals and structural signals listed in the catalog's lookup table (for example `getInstance`, `accept(`, `Builder`, `subscribe`, `clone`, `handle(`/`setNext`).
 - Look at the type structure: interfaces or abstract classes that have several implementations, classes that wrap an object of their own interface, polymorphic dispatch, and registries.
