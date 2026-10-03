@@ -70,11 +70,15 @@ Use this structure:
 <Candidates you ruled out and why, especially name-only matches.>
 
 ### Opportunities (only with concrete evidence)
+
+### Other issues noticed
+<Correctness bugs you saw while reading, one line each with `file:line`.>
 ```
 
 Keep the report proportional to what you found. A single file with one pattern needs only a short answer, not every section. Reference code as `path:line` so the user can jump to it. When asked about a specific pattern, answer that question directly first, then add any other notable findings.
 
 ## Ground rules
+- The analysis is about patterns, but don't stay silent about bugs. If you notice a correctness bug while reading, such as an ignored error result, an inverted undo, or a race, list it under "Other issues noticed", even if it is unrelated to any pattern. Don't go hunting for bugs beyond what you read for the pattern analysis.
 - Make every claim traceable to code you actually read. Never infer a pattern from file names or directory names alone.
 - Framework-provided patterns are worth one line of mention but are not the user's design decision. Examples: Spring beans as Singletons, React context as a form of Observer, Express middleware as Chain of Responsibility. Evaluate how the user's code *uses* them, not the framework itself.
 - Non-GoF patterns (Repository, Dependency Injection, MVC, Simple Factory, Null Object) may come up. Name them correctly as non-GoF instead of forcing them into a GoF category.
