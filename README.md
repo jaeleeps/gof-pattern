@@ -17,3 +17,11 @@ Then ask Claude things like *"What design patterns does `src/payments` use?"* or
 
 - `SKILL.md`: the workflow and report format.
 - `references/patterns.md`: a catalog of all 23 patterns. Each entry covers intent, the participants to confirm, search signals, idiomatic forms, when the pattern fits, smells, and lookalike patterns.
+
+## Sources
+
+The pattern catalog is based on the GoF book, and was checked against these sources:
+- Bloch & Garrod, [*23 Patterns in 80 Minutes*](https://www.cs.cmu.edu/~charlie/courses/15-214/2016-spring/slides/24%20-%20All%20the%20GoF%20Patterns.pdf), CMU 15-214 (2016)
+- Christiansson (ed.) et al., [*GoF Design Patterns – with examples using Java and UML2*](https://edeleastar.github.io/design-patterns/topic00/pdf/c-logica-gof-catalogue.pdf), Logica (2008), CC BY-SA 3.0
+
+See the Sources section of [references/patterns.md](references/patterns.md) for how these sources are used and where they disagree.
