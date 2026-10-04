@@ -2,14 +2,26 @@
   "$schema": "https://anthropic.com/claude-code/plugin.schema.json",
   "name": "gof-patterns",
   "displayName": "GoF Patterns",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "Find Gang of Four design patterns in a codebase and judge whether each one fits: Confirmed / Partial / Idiomatic / Name-only, and Appropriate / Over-engineered / Misapplied / Degraded, with file:line evidence.",
   "author": {
     "name": "Jaeyoung Lee",
     "url": "https://github.com/jaeleeps"
   },
-  "homepage": "https://github.com/jaeleeps/gof-pattern",
-  "repository": "https://github.com/jaeleeps/gof-pattern",
+  "homepage": "https://github.com/jaeleeps/gof-patterns",
+  "repository": "https://github.com/jaeleeps/gof-patterns",
   "license": "MIT",
-  "keywords": ["design-patterns", "gang-of-four", "gof", "architecture", "code-review", "refactoring", "skill"]
+  "keywords": [
+    "design-patterns",
+    "gang-of-four",
+    "gof",
+    "architecture",
+    "code-review",
+    "refactoring",
+    "skill"
+  ],
+  "icon": "./assets/icon.png",
+  "documentationUrl": "https://github.com/jaeleeps/gof-patterns#readme",
+  "supportUrl": "https://github.com/jaeleeps/gof-patterns/issues",
+  "privacyPolicyUrl": "https://github.com/jaeleeps/gof-patterns/blob/main/PRIVACY.md"
 }

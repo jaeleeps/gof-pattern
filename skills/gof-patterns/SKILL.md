@@ -4,8 +4,8 @@ description: Identify Gang of Four (GoF) design patterns in code and judge wheth
 license: MIT (see LICENSE)
 metadata:
   author: jaeleeps
-  version: "1.2.0"
-  repository: https://github.com/jaeleeps/gof-pattern
+  version: "1.2.1"
+  repository: https://github.com/jaeleeps/gof-patterns
 ---
 
 # GoF Design Pattern Analysis
