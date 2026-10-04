@@ -15,8 +15,8 @@ import sys
 from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 
-SKILL_ROOT = Path(__file__).resolve().parent.parent
-SKILL_FILES = ["SKILL.md", "references"]
+REPO_ROOT = Path(__file__).resolve().parent.parent
+SKILL_DIR = REPO_ROOT / "skills" / "gof-patterns"
 ALLOWED = "Read,Grep,Glob,Skill,Bash(grep:*),Bash(find:*),Bash(ls:*),Bash(cat:*),Bash(wc:*),Bash(git log:*)"
 DISALLOWED = "Write,Edit,NotebookEdit,WebFetch,WebSearch,Agent"
 
@@ -26,13 +26,9 @@ def run_one(ev, config, workspace):
     project = run_dir / "project"
     if run_dir.exists():
         shutil.rmtree(run_dir)
-    shutil.copytree(SKILL_ROOT / ev["cwd"], project)
+    shutil.copytree(REPO_ROOT / ev["cwd"], project)
     if config == "with_skill":
-        dest = project / ".claude" / "skills" / "gof-patterns"
-        dest.mkdir(parents=True)
-        for f in SKILL_FILES:
-            src = SKILL_ROOT / f
-            (shutil.copytree if src.is_dir() else shutil.copy)(src, dest / f)
+        shutil.copytree(SKILL_DIR, project / ".claude" / "skills" / "gof-patterns")
 
     proc = subprocess.run(
         ["claude", "-p", ev["prompt"], "--output-format", "stream-json", "--verbose",
@@ -72,7 +68,7 @@ def main():
     ap.add_argument("--configs", default="with_skill,without_skill")
     args = ap.parse_args()
 
-    evals = json.loads((SKILL_ROOT / "evals" / "evals.json").read_text())["evals"]
+    evals = json.loads((REPO_ROOT / "evals" / "evals.json").read_text())["evals"]
     if args.ids:
         wanted = {int(i) for i in args.ids.split(",")}
         evals = [e for e in evals if e["id"] in wanted]

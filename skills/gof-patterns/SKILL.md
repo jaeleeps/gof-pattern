@@ -1,6 +1,11 @@
 ---
 name: gof-patterns
 description: Identify Gang of Four (GoF) design patterns in code and judge whether each one is appropriate. Use when the user asks which design patterns a file, directory, module, or codebase uses; whether code "follows" a pattern such as Factory, Singleton, Strategy, Observer, Adapter, Decorator, Visitor, or any of the 23 GoF patterns; whether a pattern is over-engineered, misapplied, or the right fit; or which pattern would fit a piece of code.
+license: MIT (see LICENSE)
+metadata:
+  author: jaeleeps
+  version: "1.1.0"
+  repository: https://github.com/jaeleeps/gof-pattern
 ---
 
 # GoF Design Pattern Analysis
@@ -19,7 +24,7 @@ Settle on the target: a file, a directory, a module, or the whole repo. If the u
 Note the language and paradigm. They decide which forms of a pattern count as idiomatic (see step 3).
 
 Choose how to read the code based on the size of the target, not of the whole repo:
-- **Small target (roughly 40 source files or 3,000 lines or fewer):** read every source file in full before analyzing anything. List the files once (Glob), then issue all the `Read` calls **in parallel, as one batch in a single turn**. Do not try to dump the tree through a shell command (`cat` loops, `xargs`, `grep -n ''`). Those often hit permission checks or exceed the inline output limit, and then you have to re-read everything anyway. Many patterns only show across several files (Bridge, Mediator, Template Method bypassed by a subclass, Strategy eroded by `instanceof` in the context), so reading everything is cheaper and more accurate than searching first. Then go straight to step 3.
+- **Small target (roughly 40 source files or 3,000 lines or fewer):** read every source file in full before analyzing anything. List the files once, then read them all with your file-reading tool, **issuing the reads in parallel in a single step** if your environment supports parallel tool calls. Prefer the dedicated file-reading tool over dumping the tree through one shell command (`cat` loops, `xargs`, `grep -n ''`). Such commands are often blocked by permission checks or truncated when the output is too large, and then you have to re-read everything anyway. Many patterns only show across several files (Bridge, Mediator, Template Method bypassed by a subclass, Strategy eroded by `instanceof` in the context), so reading everything is cheaper and more accurate than searching first. Then go straight to step 3.
 - **Larger target:** survey and search first (step 2), then read the candidate files in parallel batches.
 
 ### 2. Gather candidates (large targets)
