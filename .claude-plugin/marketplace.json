@@ -1,0 +1,19 @@
+{
+  "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
+  "name": "gof-patterns",
+  "owner": {
+    "name": "Jaeyoung Lee",
+    "url": "https://github.com/jaeleeps"
+  },
+  "metadata": {
+    "description": "GoF design pattern detection and fit analysis for Claude Code."
+  },
+  "plugins": [
+    {
+      "name": "gof-patterns",
+      "source": "./",
+      "description": "Find Gang of Four design patterns in a codebase and judge whether each one fits.",
+      "category": "development"
+    }
+  ]
+}
