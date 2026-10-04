@@ -4,7 +4,7 @@ description: Identify Gang of Four (GoF) design patterns in code and judge wheth
 license: MIT (see LICENSE)
 metadata:
   author: jaeleeps
-  version: "1.1.0"
+  version: "1.2.0"
   repository: https://github.com/jaeleeps/gof-pattern
 ---
 
@@ -14,9 +14,12 @@ This skill does two jobs:
 1. **Detect** which GoF patterns the target code implements, and where.
 2. **Evaluate** whether each detected pattern is the right fit for this code.
 
-The catalog in [references/patterns.md](references/patterns.md) lists, for each of the 23 patterns, its intent, the participants you must confirm, search signals, idiomatic forms, when it fits, the smells of a bad fit, and the patterns it is often confused with. Read the quick-lookup table at the top first. Read individual entries when you are confirming or evaluating a specific candidate.
+The catalog in [references/patterns.md](references/patterns.md) lists, for each of the 23 patterns, its intent, the participants you must confirm, search signals, idiomatic forms, when it fits, the smells of a bad fit, and the patterns it is often confused with.
 
 ## Workflow
+
+### 0. Read the catalog (required)
+Before you classify anything, read `references/patterns.md` in full. It holds the rules that decide the close calls and are not repeated here: what counts as a Singleton versus a static utility class, which idiomatic forms count, and how to tell Proxy from Decorator or Strategy from State. Do this even when the question names a single pattern. You can read it at the same time as the code.
 
 ### 1. Scope
 Settle on the target: a file, a directory, a module, or the whole repo. If the user named nothing, use the current repo. For a large repo, start with a directory-level survey (entry points, core domain, extension points) and go deep only where candidates show up. Tell the user what you covered and what you skipped.
@@ -87,6 +90,7 @@ Use this structure:
 Keep the report proportional to what you found. A single file with one pattern needs only a short answer, not every section. Reference code as `path:line` so the user can jump to it. When asked about a specific pattern, answer that question directly first, then add any other notable findings.
 
 ## Ground rules
+- Idiomatic forms are real pattern uses. Put each one in the summary table with confidence **Idiomatic** and give it a verdict. Never move one to "considered and rejected" just because it lacks a class hierarchy. Examples: a Python generator that hides pagination is an Iterator; a `@decorator` that wraps a function to add behavior is a Decorator; a function passed in as `key=` is a Strategy.
 - The analysis is about patterns, but don't stay silent about bugs. If you notice a correctness bug while reading, such as an ignored error result, an inverted undo, or a race, list it under "Other issues noticed", even if it is unrelated to any pattern. Don't go hunting for bugs beyond what you read for the pattern analysis.
 - Make every claim traceable to code you actually read. Never infer a pattern from file names or directory names alone.
 - Framework-provided patterns are worth one line of mention but are not the user's design decision. Examples: Spring beans as Singletons, React context as a form of Observer, Express middleware as Chain of Responsibility. Evaluate how the user's code *uses* them, not the framework itself.

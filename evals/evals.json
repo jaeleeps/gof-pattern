@@ -87,7 +87,7 @@
       ],
       "expectations": [
         "Identifies Composite: Group holds child Shapes and implements draw/move/bounds by delegating to them; judged appropriate",
-        "Identifies Bridge between the Shape hierarchy (Circle/Rect/Group) and the Canvas implementor hierarchy (SvgCanvas/RasterCanvas), not merely Strategy or dependency injection",
+        "Identifies the Shape \u00d7 Canvas relationship as Bridge (shapes and canvases vary independently) or as Builder (Canvas build steps plus a toBytes() result, with two concrete builders producing different representations), with reasoning, not merely as Strategy or dependency injection",
         "Identifies Command with History as invoker (undo/redo stacks) for Move/Delete/Stroke commands and judges it appropriate",
         "Flags AutosaveCommand as over-engineered or name-only: it does not implement Command, has no undo, and is executed immediately and never stored",
         "Flags the SnapPolicy Strategy as degraded because Editor.drag special-cases `instanceof GridSnap`",

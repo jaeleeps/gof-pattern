@@ -47,11 +47,12 @@ Ask in plain language, for example *"What design patterns does `src/payments` us
 
 ## Evals
 
-`evals/` holds test prompts with checkable expectations (`evals.json`) and fixture codebases with planted patterns (`files/`: TypeScript, Python, Java). It also includes a runner that runs each prompt through headless `claude -p`, with and without the skill:
+`evals/` holds test prompts with checkable expectations (`evals.json`) and fixture codebases with planted patterns (`files/`: TypeScript, Python, Java). It also includes a runner that runs each prompt headlessly, with and without the skill, under Claude Code (`claude -p`) or OpenAI Codex (`codex exec`, run through `npx`; needs `codex login`):
 
 ```bash
-python3 evals/run_evals.py /tmp/gof-evals            # all evals, both configs
-python3 evals/run_evals.py /tmp/gof-evals --ids 5,6  # a subset
+python3 evals/run_evals.py /tmp/gof-evals                    # Claude Code, all evals, both configs
+python3 evals/run_evals.py /tmp/gof-evals --agent codex      # the same under Codex
+python3 evals/run_evals.py /tmp/gof-evals --ids 5,6          # a subset
 ```
 
 Graded results for each iteration are in `evals/results/`.
