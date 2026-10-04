@@ -1,5 +1,7 @@
 # gof-patterns
 
+![gof-patterns icon](assets/icon.png)
+
 An [Agent Skill](https://agentskills.io) that finds **Gang of Four design patterns** in a codebase and judges whether each one is a good fit.
 
 - **Detect**: reports which files and directories implement which of the 23 GoF patterns, mapping each pattern participant to `file:line`. Every finding gets a confidence level: Confirmed, Partial, Idiomatic, or Name-only.
@@ -12,15 +14,15 @@ It follows the open [Agent Skills](https://agentskills.io/specification) format,
 **Any agent (Codex, Gemini CLI, Cursor, GitHub Copilot, OpenCode, Claude Code, …)**, using the [`skills`](https://github.com/vercel-labs/skills) installer:
 
 ```bash
-npx skills add jaeleeps/gof-pattern              # this project: .agents/skills/gof-patterns
-npx skills add jaeleeps/gof-pattern -g           # every project (user scope)
-npx skills add jaeleeps/gof-pattern -a codex     # a specific agent only
+npx skills add jaeleeps/gof-patterns              # this project: .agents/skills/gof-patterns
+npx skills add jaeleeps/gof-patterns -g           # every project (user scope)
+npx skills add jaeleeps/gof-patterns -a codex     # a specific agent only
 ```
 
 **Claude Code plugin:**
 
 ```
-/plugin marketplace add jaeleeps/gof-pattern
+/plugin marketplace add jaeleeps/gof-patterns
 /plugin install gof-patterns@gof-patterns
 ```
 
@@ -37,12 +39,20 @@ Ask in plain language, for example *"What design patterns does `src/payments` us
 
 **Agents without skill support** (chat UIs, the raw API): paste `skills/gof-patterns/SKILL.md` as instructions and attach `skills/gof-patterns/references/patterns.md` together with the code.
 
+## What it runs and accesses
+
+gof-patterns is **instructions only**: Markdown in `SKILL.md` plus the reference catalog. It has no scripts, hooks, MCP servers, or binaries, and it makes **no network requests**. When it's active, your agent reads files in your project with its own tools and permissions, and then reports. The skill never asks the agent to modify, upload, or delete anything. See [PRIVACY.md](PRIVACY.md).
+
+The `evals/` test suite isn't part of normal use. It runs only when you start it by hand, and its runner launches `claude -p` or `codex exec` (Codex through `npx @openai/codex@0.160.0`).
+
 ## Layout
 
 - `skills/gof-patterns/`: the skill. Installers copy only this folder.
   - `SKILL.md`: the workflow and report format.
   - `references/patterns.md`: a catalog of all 23 patterns. Each entry covers intent, canonical examples, the participants to confirm, search signals, idiomatic forms, when the pattern fits, smells, and lookalike patterns.
 - `.claude-plugin/`: the Claude Code plugin and marketplace manifests.
+- `assets/`: the plugin icon (PNG for the listing, SVG source).
+- `PRIVACY.md`: privacy policy.
 - `evals/`: test fixtures, the runner, and results. These aren't installed.
 
 ## Evals
