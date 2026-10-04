@@ -2,7 +2,7 @@
   "$schema": "https://anthropic.com/claude-code/plugin.schema.json",
   "name": "gof-patterns",
   "displayName": "GoF Patterns",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Find Gang of Four design patterns in a codebase and judge whether each one fits: Confirmed / Partial / Idiomatic / Name-only, and Appropriate / Over-engineered / Misapplied / Degraded, with file:line evidence.",
   "author": {
     "name": "Jaeyoung Lee",
